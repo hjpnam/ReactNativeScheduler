@@ -1,7 +1,8 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { SafeAreaView, ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import CourseList from './components/CourseList';
 
+/*
 const schedule = {
   "title": "CS Courses for 2018-2019",
   "courses": [
@@ -27,14 +28,26 @@ const schedule = {
     }
   ]
 };
+*/
 
 function Banner(props) {
   return (
-    <Text style={styles.bannerStyle}>{props.title}</Text>
+    <Text style={styles.bannerStyle}>{props.title || '[loading...]'}</Text>
   );
 }
 
 function App() {
+  const [schedule, setSchedule] = useState({ title: '', courses: [] });
+
+  useEffect(() => {
+    const fetchSchedule = () => {
+      return fetch('https://courses.cs.northwestern.edu/394/data/cs-courses.php')
+        .then(res => res.json())
+        .then(json => setSchedule(json));
+    }
+    fetchSchedule();
+  }, []);
+
   return (
     <SafeAreaView style={styles.container}>
       <Banner title={schedule.title} />

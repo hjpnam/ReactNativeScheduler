@@ -26,10 +26,11 @@ function CourseList({courses, view}) {
 const styles = StyleSheet.create({
   courseList: {
     flex: 1,
-    flexDirection: 'row',
+    flexDirection: 'column',
     flexWrap: 'wrap',
     alignItems: 'center',
-    justifyContent: 'space-between'
+    justifyContent: 'center',
+    alignContent: 'flex-start',
   },
 });
 

@@ -34,7 +34,8 @@ const styles = StyleSheet.create({
     flex: 1,
     flexDirection: 'row',
     flexWrap: 'wrap',
-    alignItems: 'center',
+    alignItems: 'flex-start',
+    alignContent: 'flex-start',
     justifyContent: 'space-between'
   }
 });

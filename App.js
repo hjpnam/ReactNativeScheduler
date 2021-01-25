@@ -1,26 +1,36 @@
 import 'react-native-gesture-handler';
-import React from 'react';
+import React, { useState } from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import ScheduleScreen from './screens/ScheduleScreen';
 import CourseDetailScreen from './screens/CourseDetailsScreen';
+import UserContext from './UserContext';
+import CourseEditScreen from './screens/CourseEditScreen';
 
 const Stack = createStackNavigator();
 
 function App() {
+  const [user, setUser] = useState({ role: 'admin' });
+
   return (
-    <NavigationContainer>
-      <Stack.Navigator>
-        <Stack.Screen name="ScheduleScreen"
-          component={ScheduleScreen}
-          options={{ title: 'Schedule' }} 
-        />
-        <Stack.Screen name="CourseDetailScreen"
-          component={CourseDetailScreen}
-          options={{ title: 'Course detail' }} 
-        />
-      </Stack.Navigator>
-    </NavigationContainer>
+    <UserContext.Provider value={user}>
+      <NavigationContainer>
+        <Stack.Navigator>
+          <Stack.Screen name="ScheduleScreen"
+            component={ScheduleScreen}
+            options={{ title: 'Schedule' }} 
+          />
+          <Stack.Screen name="CourseDetailScreen"
+            component={CourseDetailScreen}
+            options={{ title: 'Course detail' }} 
+          />
+          <Stack.Screen name="CourseEditScreen"
+            component={CourseEditScreen}
+            options={{ title: 'Course Editor' }}
+          />
+        </Stack.Navigator>
+      </NavigationContainer>
+    </UserContext.Provider>
   );
 }
 

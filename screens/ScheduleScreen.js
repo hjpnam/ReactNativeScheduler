@@ -1,7 +1,8 @@
 import { NavigationContainer } from '@react-navigation/native';
-import React, { useState, useEffect } from 'react';
+import React, { useContext, useState, useEffect } from 'react';
 import { SafeAreaView, StyleSheet, Text } from 'react-native';
 import CourseList from '../components/CourseList';
+import UserContext from '../UserContext';
 
 
 function Banner(props) {
@@ -12,9 +13,11 @@ function Banner(props) {
 
 function ScheduleScreen({ navigation }) {
   const [schedule, setSchedule] = useState({ title: '', courses: [] });
+  const user = useContext(UserContext);
+  const canEdit = user && user.role === 'admin';
 
   function view(course) {
-    navigation.navigate('CourseDetailScreen', { course });
+    navigation.navigate(canEdit ? 'CourseEditScreen' : 'CourseDetailScreen', { course });
   }
 
   useEffect(() => {
@@ -39,6 +42,7 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: 'center',
     justifyContent: 'center',
+    alignContent: 'flex-start',
     paddingTop: 20
   },
   textStyle: {

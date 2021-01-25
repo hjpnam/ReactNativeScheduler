@@ -1,9 +1,17 @@
 import { NavigationContainer } from '@react-navigation/native';
 import React, { useContext, useState, useEffect } from 'react';
 import { SafeAreaView, StyleSheet, Text } from 'react-native';
+
 import CourseList from '../components/CourseList';
 import UserContext from '../UserContext';
+import { firebase } from '../firebase';
 
+function fixCourses(json) {
+  return {
+    ...json,
+    courses: Object.values(json.courses)
+  };
+}
 
 function Banner(props) {
   return (
@@ -15,6 +23,17 @@ function ScheduleScreen({ navigation }) {
   const [schedule, setSchedule] = useState({ title: '', courses: [] });
   const user = useContext(UserContext);
   const canEdit = user && user.role === 'admin';
+
+  useEffect(() => {
+    const db = firebase.database().ref();
+
+    function handleData(snap) {
+      if (snap.val()) setSchedule(fixCourses(snap.val()));
+    }
+
+    db.on('value', handleData, error => console.log(error));
+    return () => { db.off('value', handleData); };
+  }, []);
 
   function view(course) {
     navigation.navigate(canEdit ? 'CourseEditScreen' : 'CourseDetailScreen', { course });
